@@ -38,11 +38,28 @@ void insert(int key, CSG tuple){
 
 
 struct CSG *lookup(char *course, char *studentID, char *grade){      //hash table lookkup
-    int id = atoi(studentID);
+    int id = atoi(studentID);                       //integer value of studentID
     CSG* outputCSG[SIZE];
     int arrayCount = 0;
-    
-    if (course[0] == '*') {                                             //course left as '*'
+    if(course[0] == '*' && studentID[0] =='*'){     //course and studentID '*'
+        for (int i=0; i<SIZE; i++) {
+            if(CSG_DB[i]->grade == grade){
+                outputCSG[arrayCount++] = CSG_DB[i];
+            }
+        }
+    }else if (course[0] == '*' && grade[0] == '*'){ //course and grade '*'
+        for (int i=0; i<SIZE; i++) {
+            if (CSG_DB[i]->studentID == id) {
+                outputCSG[arrayCount++] = CSG_DB[i];
+            }
+        }
+    }else if (studentID[0] == '*' && grade[0] =='*'){  //studentID and grade '*'
+        for (int i=0; i<SIZE; i++) {
+            if(CSG_DB[i]->course == course){
+                outputCSG[arrayCount++] = CSG_DB[i];
+            }
+        }
+    }else if (course[0] == '*') {                                             //course left as '*'
         for(int i=0; i<SIZE; i++){
             if (CSG_DB[i]->studentID == id && CSG_DB[i]->grade == grade) {
                 outputCSG[arrayCount++] = CSG_DB[i];
@@ -50,7 +67,13 @@ struct CSG *lookup(char *course, char *studentID, char *grade){      //hash tabl
         }
     }else if (studentID[0] == '*'){                                     //studentID left as '*'
         for (int i=0; i<SIZE; i++) {
-            if (CSG_DB[i]->course == course && CSG_DB[i]->grade ==grade) {
+            if (CSG_DB[i]->course == course && CSG_DB[i]->grade == grade) {
+                outputCSG[arrayCount++] = CSG_DB[i];
+            }
+        }
+    }else if (grade[0] == '*'){                                         //grade left as '*'
+        for (int i=0; i<SIZE; i++) {
+            if (CSG_DB[i]->course == course && CSG_DB[i]->studentID == id) {
                 outputCSG[arrayCount++] = CSG_DB[i];
             }
         }
